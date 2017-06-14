@@ -1,7 +1,6 @@
 package org.teste.memoria.infos;
 
-
-public abstract class InfoMemoryLinux {
+public class MemoryLinux {
 
 	protected Integer parseMemory(String memoryResponse, final String memType, final String stringFinal) {
 		Integer availableMemory = 0;
@@ -17,7 +16,32 @@ public abstract class InfoMemoryLinux {
 		}
 		return availableMemory;
 	}
-
+	
+	protected Integer parseArrayMemorySwap(final String memoryResponse, final String memType, final String stringFinal) throws Exception {
+		final Integer availableMemory = 0;
+		final String[] verifyArray = memoryResponse.split("\n");
+		if (verifyArray.length > 1) {
+			for (int i = 0; i < verifyArray.length; i++) {
+				if (verifyArray[i].contains(memType)) {
+					final String array = verifyArray[i];
+					return parseValueMemorySwap(array);
+				}
+			}
+		} else {
+			return parseValueMemorySwap(memoryResponse);
+		}
+		return availableMemory;
+	}
+	
+	private Integer parseValueMemorySwap(final String array) throws Exception {
+		final String lastString = array.substring(array.lastIndexOf(" "), array.length()).trim();
+		if (lastString != null && !lastString.equals("")) {
+			final Integer value = Integer.parseInt(lastString);
+			return value / 1024;
+		}
+		return 0;
+	}
+	
 	private Integer parseResponse(final String response, final String memType) {
 		String newResponse = null;
 		final String[] responseSplit = response.split("\n");
@@ -66,30 +90,5 @@ public abstract class InfoMemoryLinux {
 		availableMemory = Integer.parseInt(sb.toString());
 		availableMemory = availableMemory / dividir;
 		return availableMemory;
-	}
-
-	protected Integer parseArrayMemorySwap(final String memoryResponse, final String memType, final String stringFinal) throws Exception {
-		final Integer availableMemory = 0;
-		final String[] verifyArray = memoryResponse.split("\n");
-		if (verifyArray.length > 1) {
-			for (int i = 0; i < verifyArray.length; i++) {
-				if (verifyArray[i].contains(memType)) {
-					final String array = verifyArray[i];
-					return parseValueMemorySwap(array);
-				}
-			}
-		} else {
-			return parseValueMemorySwap(memoryResponse);
-		}
-		return availableMemory;
-	}
-
-	private Integer parseValueMemorySwap(final String array) throws Exception {
-		final String lastString = array.substring(array.lastIndexOf(" "), array.length()).trim();
-		if (lastString != null && !lastString.equals("")) {
-			final Integer value = Integer.parseInt(lastString);
-			return value / 1024;
-		}
-		return 0;
 	}
 }

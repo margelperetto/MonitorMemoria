@@ -1,6 +1,6 @@
 package org.teste.memoria.command;
 
-public class ResponseVo {
+public class CmdResponse {
     private int status;
     private CollectorError errorType;
     private String responseDescription;

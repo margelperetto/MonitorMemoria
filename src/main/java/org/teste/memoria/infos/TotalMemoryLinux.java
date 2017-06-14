@@ -1,18 +1,18 @@
 package org.teste.memoria.infos;
 
-import org.teste.memoria.command.ResponseVo;
-import org.teste.memoria.command.ResponseVo.CollectorError;
-import org.teste.memoria.command.SEExecutorLinux;
+import org.teste.memoria.command.CmdResponse;
+import org.teste.memoria.command.CmdResponse.CollectorError;
+import org.teste.memoria.command.ExecutorLinux;
 
-public class InfoTotalMemoryLinux extends InfoMemoryLinux{
+public class TotalMemoryLinux extends MemoryLinux{
 
 	public Integer loadInfo(Object... params) throws Exception {
 		Integer qtTotalMemory = null;
 		Integer totalMemory = 0;
 		final String memoryType = "MemTotal:";
-		ResponseVo response = null;
+		CmdResponse response = null;
 		try {
-			response = SEExecutorLinux.execCommand("cat /proc/meminfo | grep '" + memoryType + "'");
+			response = ExecutorLinux.execCommand("cat /proc/meminfo | grep '" + memoryType + "'");
 			if (response.getErrorType() == CollectorError.SUCCESS && !response.getResponseDescription().equalsIgnoreCase("")) {
 				totalMemory = parseMemory(response.getResponseDescription(), memoryType, "memfree:");
 			}

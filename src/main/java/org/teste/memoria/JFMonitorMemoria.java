@@ -20,8 +20,8 @@ import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
-import org.teste.memoria.infos.InfoAvailableMemoryLinux;
-import org.teste.memoria.infos.InfoTotalMemoryLinux;
+import org.teste.memoria.infos.AvailableMemoryLinux;
+import org.teste.memoria.infos.TotalMemoryLinux;
 
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
@@ -74,7 +74,7 @@ public class JFMonitorMemoria extends JFrame {
 		new SwingWorker<Void, Integer>() {
 			@Override
 			protected Void doInBackground() throws Exception {
-				jpBars.setMax(new InfoTotalMemoryLinux().loadInfo());
+				jpBars.setMax(new TotalMemoryLinux().loadInfo());
 				jlTotalMem.setText("Memória Total: "+jpBars.totalMem);
 				while (isVisible()) {
 					Thread.sleep((Integer)jsSleep.getValue());
@@ -82,7 +82,7 @@ public class JFMonitorMemoria extends JFrame {
 						continue;
 					}
 					try {
-						publish(new InfoAvailableMemoryLinux().loadInfo());
+						publish(new AvailableMemoryLinux().loadInfo());
 					} catch (Exception e) {
 						System.err.println("Erro!");
 					}
